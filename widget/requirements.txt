@@ -1,0 +1,4 @@
+tcolorpy
+uvicorn[standard]
+fastapi
+pillow
