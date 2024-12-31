@@ -47,7 +47,7 @@ python3 main.py
 
 The injected JS code into the YTM web app listens to the changes in predefined elements (like title, author etc.)
 
-Injected JS code:
+Injected JS code in `src/renderer/ytmview/preload.ts`
 
 ```js
 function injectWidget(){
