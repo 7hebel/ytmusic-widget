@@ -13,6 +13,10 @@ import os
 def clear_screen():
     os.system("cls || clear")
 
+    
+def hide_cursor():
+    print("\033[?25l", end="")
+
 
 def set_cursor_pos(x: int, y: int) -> None:
     print(f"\033[{y};{x}H", end="")
@@ -49,7 +53,7 @@ class UiSizing:
 
 
 def calculate_sizing() -> UiSizing:
-    cover_w = math.floor(get_w() / 3.25)
+    cover_w = math.floor(get_w() / 3)
     cover_h = cover_w // 2
     cover_x = get_centered_cursor_start(cover_w, get_w())
     meta_y = cover_h + 3

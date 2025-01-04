@@ -95,10 +95,11 @@ async def handle_message(msg: dict) -> None:
         if not valid_author:
             await request_track_update()
 
+
 def start_server():
     uvicorn.run(
         server, 
         host="localhost", 
         port=50505, 
-        # log_level="critical"
+        log_level="critical"
     )
