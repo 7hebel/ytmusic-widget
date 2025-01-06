@@ -1,4 +1,6 @@
-import utils
+from modules.disc import DiscRenderer
+from modules.clock import Clock
+from modules import utils
 
 from tcolorpy import tcolor, AnsiStyle
 from dataclasses import dataclass
@@ -61,7 +63,7 @@ def calculate_sizing() -> UiSizing:
     bar_x = get_centered_cursor_start(get_w() // 2, get_w())
     queue_y = get_h() - 6
     
-    return UiSizing(
+    sizing = UiSizing(
         cover_w=cover_w,
         cover_h=cover_h,
         cover_xy=(cover_x, 2),
@@ -72,6 +74,15 @@ def calculate_sizing() -> UiSizing:
         bar_y=bar_y,
         queue_y=queue_y
     )
+    
+    if DiscRenderer.instance is not None:
+        DiscRenderer.instance.update_sizing(sizing)
+        
+    if Clock.instance is not None:
+        Clock.instance.update_position()
+        
+    return sizing
+
 
 SIZING = calculate_sizing()
 

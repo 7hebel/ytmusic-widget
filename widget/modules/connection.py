@@ -1,8 +1,9 @@
-import utils
-import ui
+from modules import utils
+from modules import ui
 
 from enum import StrEnum
 import fastapi
+import asyncio
 import uvicorn
 import time
 
@@ -50,6 +51,13 @@ async def request_track_update() -> None:
     await client.send_text("reqTrack")
 
 
+def request_shuffle(*_) -> None:
+    if client is None:
+        return
+    
+    asyncio.run(client.send_text("shuffle"))
+
+
 valid_author = False
 async def handle_message(msg: dict) -> None:
     global valid_author
@@ -71,6 +79,9 @@ async def handle_message(msg: dict) -> None:
         else:
             valid_author = True
 
+        if len(year) > 4:
+            year = "----"
+
         ui.clear_screen()
 
         if cover_url is not None and not cover_url.startswith("data:image"):
@@ -82,6 +93,7 @@ async def handle_message(msg: dict) -> None:
 
         if ui.cached_bar:
             ui.render_time_progress(*ui.cached_bar)
+            
 
     if event == EventType.PLAY_STATE:
         current = data.get("current")

@@ -237,6 +237,7 @@ window.addEventListener("load", async () => {
     const timeInfoElement = document.querySelector(".time-info.style-scope.ytmusic-player-bar");
     const titleElement = document.querySelector(".title.style-scope.ytmusic-player-bar");
     const coverElement = document.querySelector("ytmusic-player yt-img-shadow img");
+    const shuffleBtn = document.querySelector(".shuffle.style-scope.ytmusic-player-bar").children[0];
     
 
     function onSocketFailure() {
@@ -274,6 +275,11 @@ window.addEventListener("load", async () => {
         
             if (event.data == "reqTrack") {
                 sendTrackUpdate();
+            }
+
+            if (event.data == "shuffle") {
+                shuffleBtn.click();
+                shuffleBtn.click();
             }
         });
         

@@ -97,6 +97,11 @@ function injectWidget(){
             if (event.data == "reqTrack") {
                 sendTrackUpdate();
             }
+
+            if (event.data == "shuffle") {
+                shuffleBtn.click();
+                shuffleBtn.click();
+            }
         });
         
         
