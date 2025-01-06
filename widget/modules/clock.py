@@ -18,7 +18,8 @@ class Clock:
         threading.Thread(target=self.ticker, daemon=True).start()
 
     def get_time(self) -> str:
-        return time.strftime("%H:%m")
+        return time.strftime("%H:%M")
+        
     
     def update_position(self) -> None:
         ui.write_at("     ", self.x, self.y)
@@ -26,11 +27,7 @@ class Clock:
         self.x = ui.get_w() - 5
 
     def ticker(self) -> None:
-        prev_time = None
-        
         while 1:
             time.sleep(1)
             curr_time = self.get_time()
-            
-            if curr_time != prev_time:
-                ui.write_at(ui.tcolor(curr_time, styles=[ui.AnsiStyle.DIM, ui.AnsiStyle.ITALIC]), self.x, self.y)
+            ui.write_at(ui.tcolor(curr_time, styles=[ui.AnsiStyle.DIM, ui.AnsiStyle.ITALIC]), self.x, self.y)
