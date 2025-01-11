@@ -56,7 +56,7 @@ python3 main.py
 * Cover based UI colors.
   
   - UI color is based on the cover image. 
-  <img src="./assets/colors.png" width="600" alt="discs" />
+    <img src="./assets/colors.png" width="600" alt="discs" />
 
 <div align="center">
     <h2>⚙️ Solution</h2>
