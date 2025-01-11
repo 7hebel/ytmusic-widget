@@ -49,9 +49,14 @@ python3 main.py
 * Updated disc:
   
   - It's color is now based on the cover's average color.
-    <img src="./assets/discs.png" width="500" alt="discs" />
+    <img src="./assets/discs.png" width="600" alt="discs" />
   - Shine animation is now color and distance based.
   - Fixed a few scaling bugs.
+
+* Cover based UI colors.
+  
+  - UI color is based on the cover image. 
+  <img src="./assets/colors.png" width="600" alt="discs" />
 
 <div align="center">
     <h2>⚙️ Solution</h2>

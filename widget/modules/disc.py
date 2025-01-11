@@ -7,9 +7,6 @@ import time
 import math
 
 
-max255 = lambda n: n if n <= 255 else 255
-
-
 class Ticker:
     def __init__(self, max_step: int, frame_duration_s: float, seq_cooldown_s: float, on_tick: Callable) -> None:
         self.max_step = max_step
@@ -129,9 +126,9 @@ class DiscRenderer:
                 distance = 150
 
             color = (
-                max255(distance + int(avg_color[0] * (distance / 150))),
-                max255(distance + int(avg_color[1] * (distance / 150))),
-                max255(distance + int(avg_color[2] * (distance / 150))),
+                utils.max255int(distance + avg_color[0] * (distance / 150)),
+                utils.max255int(distance + avg_color[1] * (distance / 150)),
+                utils.max255int(distance + avg_color[2] * (distance / 150)),
             )
         
             self.__disc_color_cache[pos] = color
@@ -207,9 +204,9 @@ class DiscRenderer:
                 if pos in self.__disc_color_cache:
                     base_color = self.__disc_color_cache[pos]
                     color = (
-                        max255(int(base_color[0] * 1.5 + distance)),
-                        max255(int(base_color[1] * 1.5 + distance)),
-                        max255(int(base_color[2] * 1.5 + distance)),
+                        utils.max255int(base_color[0] * 1.5 + distance),
+                        utils.max255int(base_color[1] * 1.5 + distance),
+                        utils.max255int(base_color[2] * 1.5 + distance),
                     )
                     color_positions[pos] = color
 

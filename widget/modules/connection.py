@@ -1,3 +1,4 @@
+from modules import config
 from modules import utils
 from modules import ui
 
@@ -87,6 +88,9 @@ async def handle_message(msg: dict) -> None:
         if cover_url is not None and not cover_url.startswith("data:image"):
             cover_img = utils.get_web_image(cover_url)
             ui.render_cover(cover_img)
+            
+            if config.load_config().ui_colors:
+                ui.UI_COLOR = utils.prepare_ui_color(cover_img)
             
         ui.render_metadata_line(title, author, year)
         ui.render_queue(queue)

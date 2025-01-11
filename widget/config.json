@@ -1,5 +1,6 @@
 {
     "enable_disc": true,
     "enable_clock": true,
+    "ui_colors": true,
     "shuffle_shortcut": "ctrl+alt+f12"
 }
