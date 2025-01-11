@@ -98,6 +98,9 @@ def render_cover(image: Image.Image) -> None:
     global cached_cover
     cached_cover = image
     
+    if DiscRenderer.instance is not None:
+        DiscRenderer.instance.on_cover_update()
+        
     image = image.resize((SIZING.cover_w, SIZING.cover_h))
     for y in range(0, image.size[1]):
 
@@ -249,4 +252,3 @@ def error_message(content: str) -> None:
     draw_x = get_centered_cursor_start(len(content) + 4, get_w())
     draw_y = get_h() // 2
     write_at(message, draw_x, draw_y)
-

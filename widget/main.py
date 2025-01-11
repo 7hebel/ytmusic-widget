@@ -14,7 +14,7 @@ ui.hide_cursor()
 
 
 if cfg.disc_enable:
-    disc.DiscRenderer(ui.calculate_sizing(), cfg.disc_animation)
+    disc.DiscRenderer(ui.calculate_sizing())
     
 if cfg.clock_enable:
     clock.Clock()
@@ -24,5 +24,3 @@ if cfg.shuffle_shortcut:
 
     
 connection.start_server()
-
-ui.error_message("no source")

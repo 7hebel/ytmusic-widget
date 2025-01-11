@@ -1,3 +1,4 @@
+from functools import lru_cache
 from io import BytesIO
 from PIL import Image
 import requests
@@ -29,4 +30,20 @@ def time_to_secs(time: float) -> int:
 def get_web_image(url: str) -> Image.Image:
     resp = requests.get(url, timeout=3)
     return Image.open(BytesIO(resp.content))
+    
+
+Image.Image.__hash__ = lambda self: hash(str(list(self.getdata())))
+
+@lru_cache
+def get_avg_color(im: Image.Image) -> tuple[int, int, int]:
+    image = im.convert("RGB")
+    pixels = list(image.getdata())
+    
+    total_pixels = len(pixels)
+    avg_r = sum(pixel[0] for pixel in pixels) / total_pixels
+    avg_g = sum(pixel[1] for pixel in pixels) / total_pixels
+    avg_b = sum(pixel[2] for pixel in pixels) / total_pixels
+    
+    return  (int(avg_r), int(avg_g), int(avg_b))
+    
     

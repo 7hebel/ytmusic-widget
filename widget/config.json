@@ -1,8 +1,5 @@
 {
-    "disc": {
-        "enable": true,
-        "animation": true
-    },
+    "enable_disc": true,
     "enable_clock": true,
     "shuffle_shortcut": "ctrl+alt+f12"
 }
