@@ -59,10 +59,7 @@ def request_shuffle(*_) -> None:
     asyncio.run(client.send_text("shuffle"))
 
 
-valid_author = False
 async def handle_message(msg: dict) -> None:
-    global valid_author
-    
     event = msg.get("event")
     data = msg.get("data")
     
@@ -74,12 +71,9 @@ async def handle_message(msg: dict) -> None:
         queue = data.get("queue")
 
         if not author:
-            valid_author = False
             ui.error_message("no author")
             return await request_track_update()
-        else:
-            valid_author = True
-
+        
         if len(year) > 4:
             year = "----"
 
@@ -97,7 +91,6 @@ async def handle_message(msg: dict) -> None:
 
         if ui.cached_bar:
             ui.render_time_progress(*ui.cached_bar)
-            
 
     if event == EventType.PLAY_STATE:
         current = data.get("current")
@@ -107,9 +100,6 @@ async def handle_message(msg: dict) -> None:
             return
         
         ui.render_time_progress(current, total)
-
-        if not valid_author:
-            await request_track_update()
 
 
 def start_server():

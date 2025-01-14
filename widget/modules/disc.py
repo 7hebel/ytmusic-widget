@@ -143,7 +143,7 @@ class DiscRenderer:
 
                 try:
                     cover_reflection_color = self.__current_cover.getpixel((x, y))
-                    color = utils.blend_colors(color, cover_reflection_color, 0.03)
+                    color = utils.blend_colors(color, cover_reflection_color, 0.05)
                 except IndexError:
                     pass
                 

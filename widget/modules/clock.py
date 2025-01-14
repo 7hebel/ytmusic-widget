@@ -5,6 +5,7 @@ import time
 
 
 class Clock:
+    """ Handle clock widget in bottom-right corner. """
     instance: "Clock | None" = None
     
     def __init__(self) -> None:
@@ -19,7 +20,6 @@ class Clock:
 
     def get_time(self) -> str:
         return time.strftime("%H:%M")
-        
     
     def update_position(self) -> None:
         ui.write_at("     ", self.x, self.y)
