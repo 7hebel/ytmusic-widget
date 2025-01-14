@@ -45,7 +45,7 @@ python3 main.py
     <h2>📜 Changelog</h2>
 </div>
 
-#### **01/11/2025**:
+#### **11/01/2025**:
 * Updated disc:
   
   - It's color is now based on the cover's average color.
@@ -57,6 +57,10 @@ python3 main.py
   
   - UI color is based on the cover image. 
     <img src="./assets/colors.png" width="600" alt="discs" />
+
+#### **14/01/2025**:
+* Reflect part of cover on the disc.
+  <img src="./assets/reflection.png" width="600" alt="reflections" />
 
 <div align="center">
     <h2>⚙️ Solution</h2>

@@ -98,11 +98,11 @@ cached_bar: tuple[int, int] | None = None
 def render_cover(image: Image.Image) -> None:
     global cached_cover
     cached_cover = image
+    image = image.resize((SIZING.cover_w, SIZING.cover_h))
 
     if DiscRenderer.instance is not None:
-        DiscRenderer.instance.on_cover_update()
+        DiscRenderer.instance.on_cover_update(image)
 
-    image = image.resize((SIZING.cover_w, SIZING.cover_h))
     for y in range(0, image.size[1]):
 
         line = ""

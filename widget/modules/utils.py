@@ -62,3 +62,15 @@ def prepare_ui_color(im: Image.Image) -> list[int, int, int]:
     
     r, g, b = colorsys.hls_to_rgb(h, l, s)
     return (int(r * 255), int(g * 255), int(b * 255))
+
+
+def blend_colors(init_color: tuple[int, int, int], blend_color: tuple[int, int, int] | None, alpha: float) -> tuple[int, int, int]:
+    if blend_color is None:
+        return init_color
+    
+    r1, g1, b1 = init_color
+    r2, g2, b2 = blend_color
+    r_out = int((1 - alpha) * r1 + alpha * r2)
+    g_out = int((1 - alpha) * g1 + alpha * g2)
+    b_out = int((1 - alpha) * b1 + alpha * b2)
+    return (r_out, g_out, b_out)

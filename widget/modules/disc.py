@@ -18,16 +18,16 @@ class Ticker:
         self.__paused = False
         self.__ticker_abort_sig = False
         self.__ticker = threading.Thread(target=self.ticker, daemon=True)
-        
+
         self.start()
-        
+
     @property
     def step(self) -> int:
         return self.__step
-    
+
     def __tick(self) -> None:
         self.on_tick()
-        
+
         self.__step += 1
         if self.__step > self.max_step:
             self.__step = 0
@@ -38,24 +38,24 @@ class Ticker:
             if self.__ticker_abort_sig:
                 self.__ticker_abort_sig = False
                 return
-            
+
             if self.__paused:
                 continue
-            
+
             time.sleep(self.frame_duration_s)
-                
+
             self.__tick()
-            
+
     def reset(self) -> None:
         self.__ticker_abort_sig = True
         self.__paused = True
         self.__step = 0
         self.__ticker = threading.Thread(target=self.ticker, daemon=True)
-        
+
     def start(self) -> None:
         self.__paused = False
         self.__ticker.start()
-    
+
 
 class DiscRenderer:
     instance: "DiscRenderer | None" = None
@@ -67,7 +67,7 @@ class DiscRenderer:
         self.size_factor = 0.85
         self.sizing = sizing
 
-        self.__has_cover = False
+        self.__current_cover: "ui.Image.Image | bool" = False
         self.__disc_color_cache: dict[tuple[int, int], tuple[int, int, int]] = {}
         self.__cache_coloring()
 
@@ -108,7 +108,10 @@ class DiscRenderer:
 
     def __cache_coloring(self) -> None:
         self.__disc_color_cache = {}
-        ellipsis = self.generate_ellipse_coordinates(self.sizing.cover_w * self.size_factor, self.sizing.cover_h * self.size_factor)
+        disc_w = self.sizing.cover_w * self.size_factor
+        disc_h = self.sizing.cover_h * self.size_factor
+
+        ellipsis = self.generate_ellipse_coordinates(disc_w, disc_h)
         lightpoint = (
             (self.sizing.cover_xy[0] + self.sizing.cover_w),
             (self.sizing.cover_xy[1] + self.sizing.cover_h)
@@ -118,7 +121,7 @@ class DiscRenderer:
             avg_color = (50, 50, 50)
         else:
             avg_color = utils.get_avg_color(ui.cached_cover.resize((self.sizing.cover_h, self.sizing.cover_w)))
-        
+
         for pos in ellipsis:
             distance = int(math.dist(pos, lightpoint))
 
@@ -130,7 +133,20 @@ class DiscRenderer:
                 utils.max255int(distance + avg_color[1] * (distance / 150)),
                 utils.max255int(distance + avg_color[2] * (distance / 150)),
             )
-        
+
+            if self.__current_cover:
+                disc_start_x = min(ellipsis, key=lambda x: x[0])[0]
+                disc_start_y = min(ellipsis, key=lambda x: x[1])[1]
+                
+                x = -(pos[0] - disc_start_x) - 1
+                y = pos[1] - disc_start_y
+
+                try:
+                    cover_reflection_color = self.__current_cover.getpixel((x, y))
+                    color = utils.blend_colors(color, cover_reflection_color, 0.03)
+                except IndexError:
+                    pass
+                
             self.__disc_color_cache[pos] = color
 
     def is_point_in_triangle(self, triangle: tuple[tuple[int, int]], point: tuple[int, int]) -> bool:
@@ -176,14 +192,14 @@ class DiscRenderer:
         self.sizing = sizing
         self.__cache_coloring()
 
-    def on_cover_update(self) -> None:
+    def on_cover_update(self, cover: "ui.Image.Image") -> None:
         self.ticker.reset()
+        self.__current_cover = cover
         self.__cache_coloring()
-        self.__has_cover = True
         self.ticker.start()
 
     def draw_frame(self) -> None:
-        if self.sizing is None or not self.__has_cover:
+        if self.sizing is None or not self.__current_cover:
             return
 
         shine_triang = self.__calc_shine_triangle_points()
@@ -191,16 +207,16 @@ class DiscRenderer:
         color_positions: dict[tuple[int, int], tuple[int, int, int]] = {}
         for pos in self.generate_ellipse_coordinates(self.sizing.cover_w * self.size_factor, self.sizing.cover_h * self.size_factor):
             color = None
-            
+
             if self.is_point_in_triangle(shine_triang, pos):
                 distance = int(math.dist(
                     pos,
                     (self.sizing.cover_xy[0] + self.sizing.cover_w + (self.sizing.cover_w * self.size_factor / 2), 0)
                 )) / 100
-                
+
                 if distance > 50:
                     distance = 50
-                
+
                 if pos in self.__disc_color_cache:
                     base_color = self.__disc_color_cache[pos]
                     color = (
