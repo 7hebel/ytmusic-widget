@@ -16,7 +16,7 @@ class Ticker:
 
         self.__step = 0
         self.__paused = False
-        self.__ticker_abort_sig = False
+        self.__ticker_abort_sig = threading.Event()
         self.__ticker = threading.Thread(target=self.ticker, daemon=True)
 
         self.start()
@@ -31,23 +31,22 @@ class Ticker:
         self.__step += 1
         if self.__step > self.max_step:
             self.__step = 0
-            time.sleep(self.seq_cooldown_s)
+            self.__ticker_abort_sig.wait(self.seq_cooldown_s)
 
     def ticker(self) -> None:
         while 1:
-            if self.__ticker_abort_sig:
-                self.__ticker_abort_sig = False
+            if self.__ticker_abort_sig.isSet():
+                self.__ticker_abort_sig.clear()
                 return
 
             if self.__paused:
                 continue
 
             time.sleep(self.frame_duration_s)
-
             self.__tick()
 
     def reset(self) -> None:
-        self.__ticker_abort_sig = True
+        self.__ticker_abort_sig.set()
         self.__paused = True
         self.__step = 0
         self.__ticker = threading.Thread(target=self.ticker, daemon=True)
