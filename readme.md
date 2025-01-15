@@ -50,14 +50,9 @@ python3 main.py
 * Progress bar has gradient instead of static color.
   <img src="./assets/gradients.png" width="600" alt="discs" />
   
-
 #### **14/01/2025**:
 * Reflect part of cover on the disc.
   <img src="./assets/reflection.png" width="600" alt="reflections" />
-
-<div align="center">
-    <h2>⚙️ Solution</h2>
-</div>
 
 #### **11/01/2025**:
 * Updated disc:
@@ -71,6 +66,10 @@ python3 main.py
   
   - UI color is based on the cover image. 
     <img src="./assets/colors.png" width="600" alt="discs" />
+
+<div align="center">
+    <h2>⚙️ Solution</h2>
+</div>
 
 The injected JS code into the YTM web app listens to the changes in predefined elements (like title, author etc.)
 
