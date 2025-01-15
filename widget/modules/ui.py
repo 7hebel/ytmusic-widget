@@ -201,14 +201,14 @@ def render_queue(queue: list[dict[str, str]]) -> None:
         duration = item.get("duration")
 
         color = (
-            utils.max255int(UI_SECONDARY_COLOR[0] * ((len(queue) - index + 2) / (5 * len(queue))) * 3),
-            utils.max255int(UI_SECONDARY_COLOR[1] * ((len(queue) - index + 2) / (5 * len(queue))) * 3),
-            utils.max255int(UI_SECONDARY_COLOR[2] * ((len(queue) - index + 2) / (5 * len(queue))) * 3),
-        ) #                                            ^         ^     ^                  ^
-        #                         Reverse index based /          |     |                  |
-        #                         Shift to the lighter spectrum /      |                  |
-        #      Greater denominator decreases contrast between indexes /                   |
-        #                                                            Brighten the result /
+            utils.max255int(UI_SECONDARY_COLOR[0] * ((len(queue) - index + 3) / (5 * len(queue))) * 2.75),
+            utils.max255int(UI_SECONDARY_COLOR[1] * ((len(queue) - index + 3) / (5 * len(queue))) * 2.75),
+            utils.max255int(UI_SECONDARY_COLOR[2] * ((len(queue) - index + 3) / (5 * len(queue))) * 2.75),
+        ) #                                                      ^         ^     ^                  ^
+        #                                   Reverse index based /          |     |                  |
+        #                                   Shift to the lighter spectrum /      |                  |
+        #                Greater denominator decreases contrast between indexes /                   |
+        #                                                                      Brighten the result /
 
         num = tcolor(f"{index}  ", color)
         title_style = tcolor(f"{title}", color)
