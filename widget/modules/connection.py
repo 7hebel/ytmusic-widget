@@ -84,7 +84,7 @@ async def handle_message(msg: dict) -> None:
             ui.render_cover(cover_img)
             
             if config.load_config().ui_colors:
-                ui.UI_COLOR = utils.prepare_ui_color(cover_img)
+                ui.UI_PRIMARY_COLOR, ui.UI_SECONDARY_COLOR = utils.prepare_ui_colors(cover_img)
             
         ui.render_metadata_line(title, author, year)
         ui.render_queue(queue)

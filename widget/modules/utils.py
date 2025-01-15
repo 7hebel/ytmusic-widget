@@ -53,15 +53,21 @@ def get_avg_color(im: Image.Image) -> tuple[int, int, int]:
     return (int(avg_r), int(avg_g), int(avg_b))
     
 
-def prepare_ui_color(im: Image.Image) -> list[int, int, int]:
+def prepare_ui_colors(im: Image.Image) -> tuple[tuple[int, int, int], tuple[int, int, int]]:
     avg_color_rgb = get_avg_color(im)
-    h, l, s = colorsys.rgb_to_hls(*[v/255 for v in avg_color_rgb])
+    avg_h, _, avg_s = colorsys.rgb_to_hls(*[v/255 for v in avg_color_rgb])
     
-    l = 0.85
-    s = min(1.0, s * 1.1)
+    sec_l = 0.75
+    sec_s = min(0.8, avg_s * 1.15)
+    sec_r, sec_g, sec_b = colorsys.hls_to_rgb(avg_h, sec_l, sec_s)
+    secondary = (int(sec_r * 255), int(sec_g * 255), int(sec_b * 255))
+
+    prim_l = 0.75
+    prim_s = min(0.85, sec_s * 10)
+    prim_r, prim_g, prim_b = colorsys.hls_to_rgb(avg_h, prim_l, prim_s)
+    primary = (int(prim_r * 255), int(prim_g * 255), int(prim_b * 255))
     
-    r, g, b = colorsys.hls_to_rgb(h, l, s)
-    return (int(r * 255), int(g * 255), int(b * 255))
+    return primary, secondary
 
 
 def blend_colors(init_color: tuple[int, int, int], blend_color: tuple[int, int, int] | None, alpha: float) -> tuple[int, int, int]:
@@ -74,3 +80,9 @@ def blend_colors(init_color: tuple[int, int, int], blend_color: tuple[int, int, 
     g_out = int((1 - alpha) * g1 + alpha * g2)
     b_out = int((1 - alpha) * b1 + alpha * b2)
     return (r_out, g_out, b_out)
+
+
+# def get_progress_gradient_color(start: tuple[int, int, int], end: tuple[int, int, int], step: int, max_steps: int) -> tuple[int, int, int]:
+#     return blend_colors(start, end, (step / max_steps))
+    
+    

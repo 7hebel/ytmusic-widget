@@ -84,7 +84,8 @@ def calculate_sizing() -> UiSizing:
     return sizing
 
 
-UI_COLOR = (255, 255, 255)
+UI_PRIMARY_COLOR = (255, 255, 255)
+UI_SECONDARY_COLOR = (200, 200, 200)
 SIZING = calculate_sizing()
 
 cached_cover: Image.Image | None = None
@@ -117,24 +118,25 @@ def render_time_progress(progress_info: str, total_info: str) -> None:
     global cached_bar
     cached_bar = (progress_info, total_info)
 
-    PASSED_CHAR = tcolor("━", UI_COLOR)
-    UNPASSED_CHAR = tcolor("─", UI_COLOR, styles=[AnsiStyle.DIM])
+    PASSED_CHAR = "━"
+    UNPASSED_CHAR = "─"
 
     progress_s = utils.time_to_secs(utils.parse_time(progress_info))
     total_s = utils.time_to_secs(utils.parse_time(total_info))
 
     perc_done = progress_s / total_s
-    content = tcolor(f"{progress_info}  ", UI_COLOR)
+    content = tcolor(f"{progress_info}  ", UI_SECONDARY_COLOR)
 
     bar_width = (get_w() // 2) - (len(progress_info) + 2) - (len(total_info)) - 1
 
     for i in range(bar_width):
+        color = utils.blend_colors(UI_SECONDARY_COLOR, UI_PRIMARY_COLOR, (i / bar_width))
         if perc_done > (i / bar_width):
-            content += PASSED_CHAR
+            content += tcolor(PASSED_CHAR, color)
         else:
-            content += UNPASSED_CHAR
+            content += tcolor(UNPASSED_CHAR, color, styles=[AnsiStyle.DIM])
 
-    content += tcolor(f"  {total_info}", UI_COLOR)
+    content += tcolor(f"  {total_info}", UI_PRIMARY_COLOR)
 
     write_at(content, SIZING.bar_x, SIZING.bar_y)
 
@@ -151,20 +153,20 @@ def render_metadata_line(title: str, author: str, year: str) -> None:
     year_padding = (width - 2) - (len(author) + title_padding + len(title)) - 1
 
     if len(author) >= title_padding + len(author):
-        content = tcolor(author, UI_COLOR, styles=[AnsiStyle.DIM, AnsiStyle.ITALIC])
+        content = tcolor(author, UI_SECONDARY_COLOR, styles=[AnsiStyle.DIM, AnsiStyle.ITALIC])
         content += "   "
-        content += tcolor(title, UI_COLOR)
+        content += tcolor(title, UI_PRIMARY_COLOR)
         content += "   "
-        content += tcolor(year, UI_COLOR, styles=[AnsiStyle.DIM, AnsiStyle.ITALIC])
+        content += tcolor(year, UI_SECONDARY_COLOR, styles=[AnsiStyle.DIM, AnsiStyle.ITALIC])
 
         write_at(content, get_centered_cursor_start(utils.real_length(content), get_w()), SIZING.meta_y)
 
     else:
-        content = tcolor(author, UI_COLOR, styles=[AnsiStyle.DIM, AnsiStyle.ITALIC])
+        content = tcolor(author, UI_SECONDARY_COLOR, styles=[AnsiStyle.DIM, AnsiStyle.ITALIC])
         content += (" " * title_padding)
-        content += tcolor(title, UI_COLOR)
+        content += tcolor(title, UI_PRIMARY_COLOR)
         content += (" " * year_padding)
-        content += tcolor(year, UI_COLOR, styles=[AnsiStyle.DIM, AnsiStyle.ITALIC])
+        content += tcolor(year, UI_SECONDARY_COLOR, styles=[AnsiStyle.DIM, AnsiStyle.ITALIC])
 
         write_at(content, SIZING.meta_x, SIZING.meta_y)
 
@@ -199,9 +201,9 @@ def render_queue(queue: list[dict[str, str]]) -> None:
         duration = item.get("duration")
 
         color = (
-            utils.max255int(UI_COLOR[0] * ((len(queue) - index + 2) / (5 * len(queue))) * 3),
-            utils.max255int(UI_COLOR[1] * ((len(queue) - index + 2) / (5 * len(queue))) * 3),
-            utils.max255int(UI_COLOR[2] * ((len(queue) - index + 2) / (5 * len(queue))) * 3),
+            utils.max255int(UI_SECONDARY_COLOR[0] * ((len(queue) - index + 2) / (5 * len(queue))) * 3),
+            utils.max255int(UI_SECONDARY_COLOR[1] * ((len(queue) - index + 2) / (5 * len(queue))) * 3),
+            utils.max255int(UI_SECONDARY_COLOR[2] * ((len(queue) - index + 2) / (5 * len(queue))) * 3),
         ) #                                            ^         ^     ^                  ^
         #                         Reverse index based /          |     |                  |
         #                         Shift to the lighter spectrum /      |                  |

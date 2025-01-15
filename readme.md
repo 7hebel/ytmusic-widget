@@ -45,6 +45,12 @@ python3 main.py
     <h2>📜 Changelog</h2>
 </div>
 
+#### **15/01/2025**
+* Song's title and progress bar are now using primary color based on accent color with boosted saturation.
+* Progress bar has gradient instead of static color.
+  <img src="./assets/gradients.png" width="600" alt="discs" />
+  
+
 #### **14/01/2025**:
 * Reflect part of cover on the disc.
   <img src="./assets/reflection.png" width="600" alt="reflections" />

@@ -30,4 +30,4 @@ class Clock:
         while 1:
             time.sleep(1)
             curr_time = self.get_time()
-            ui.write_at(ui.tcolor(curr_time, ui.UI_COLOR, styles=[ui.AnsiStyle.DIM, ui.AnsiStyle.ITALIC]), self.x, self.y)
+            ui.write_at(ui.tcolor(curr_time, ui.UI_SECONDARY_COLOR, styles=[ui.AnsiStyle.DIM, ui.AnsiStyle.ITALIC]), self.x, self.y)
